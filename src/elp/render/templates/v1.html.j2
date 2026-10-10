@@ -1,0 +1,33 @@
+<div>
+  <h2>Overview</h2>
+  <p dir="auto">{{ title }}</p>
+  {% if bullets %}
+  <ul>{% for bullet in bullets %}<li>{{ bullet }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if specifics %}
+  <h2>Specifications</h2>
+  <table><tbody>
+    {% for name, value in specifics %}
+    <tr><th>{{ name }}</th><td dir="auto">{{ value }}</td></tr>
+    {% endfor %}
+  </tbody></table>
+  {% endif %}
+  {% if compatibility %}
+  <h2>Compatibility supplied by seller</h2>
+  <table><thead><tr><th>Make</th><th>Model</th><th>Years</th><th>Engine</th></tr></thead>
+  <tbody>
+  {% for item in compatibility %}
+  <tr><td>{{ item.make }}</td><td>{{ item.model }}</td>
+    <td>{{ item.year_from }}-{{ item.year_to }}</td><td>{{ item.engine }}</td></tr>
+  {% endfor %}
+  </tbody></table>
+  {% endif %}
+  {% if omitted %}
+  <p>Additional {{ omitted }} supplied compatibility entries omitted from this preview.</p>
+  {% endif %}
+  {% if condition_note %}
+  <h2>Condition</h2><p dir="auto">{{ condition_note }}</p>
+  {% endif %}
+  <h2>Shipping and returns</h2>
+  <p>Refer to the seller's published shipping and returns terms.</p>
+</div>
