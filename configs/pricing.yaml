@@ -1,0 +1,9 @@
+# USD per million tokens; synthetic offline fixture only.
+# Later providers require verified pricing and non-zero explicit user budgets.
+version: "m0"
+prices:
+  fixture-local:
+    input_usd_per_million: "0"
+    output_usd_per_million: "0"
+    source_url: null
+    verified_on: null

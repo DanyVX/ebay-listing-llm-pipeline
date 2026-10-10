@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install package and developer tools
+        run: python -m pip install -e ".[dev]"
+      - name: Lint and format check
+        run: python scripts/tasks.py lint
+      - name: Strict typecheck
+        run: python scripts/tasks.py typecheck
+      - name: Tests and coverage
+        run: python scripts/tasks.py test
+      - name: History and index privacy scan
+        run: python scripts/tasks.py privacy-scan
+      - name: Dependency vulnerability audit
+        run: python -m pip_audit
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

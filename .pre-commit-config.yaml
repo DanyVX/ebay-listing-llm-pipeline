@@ -1,0 +1,14 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.4
+    hooks:
+      - id: ruff
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: privacy-history-and-staged
+        name: Scan committed history and staged files for private data
+        entry: python scripts/privacy_scan.py
+        language: system
+        pass_filenames: false
+        always_run: true

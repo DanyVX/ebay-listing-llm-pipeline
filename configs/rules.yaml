@@ -1,0 +1,53 @@
+# Evidence and dates refer to *documents reviewed*, not a certification of compliance.
+# Rules marked needs_marketplace_lookup MUST NOT be treated as verified limits.
+version: "m0-2026-10-10"
+marketplace: "EBAY_US"
+rules:
+  - id: title_max_chars
+    status: verified
+    severity: error
+    value: 80
+    source_url: "https://developer.ebay.com/api-docs/user-guides/static/trading-user-guide/listing-title.html"
+    verified_on: 2026-10-10
+  - id: active_content_allowed
+    status: verified
+    severity: error
+    value: false
+    source_url: "https://www.ebay.com/help/policies/safety-security-policies/fake-items-policy?id=4247"
+    verified_on: 2026-10-10
+  - id: accurate_brand_claims
+    status: verified
+    severity: warn
+    value: "Brand and authenticity claims must be supported; VeRO concerns require human review."
+    source_url: "https://www.ebay.com/help/default/default/verified-rights-owner-vero-policy?id=4349"
+    verified_on: 2026-10-10
+  - id: item_specific_name_max_chars
+    status: needs_marketplace_lookup
+    severity: error
+    value: null
+    source_url: "https://developer.ebay.com/api-docs/user-guides/static/trading-user-guide/item-specifics.html"
+    verified_on: null
+  - id: item_specific_value_max_chars
+    status: needs_marketplace_lookup
+    severity: error
+    value: null
+    source_url: "https://developer.ebay.com/api-docs/user-guides/static/trading-user-guide/item-specifics.html"
+    verified_on: null
+  - id: block_external_contact_claims
+    status: local_safeguard
+    severity: error
+    value: true
+    source_url: null
+    verified_on: null
+  - id: block_unsupported_oem_claims
+    status: local_safeguard
+    severity: error
+    value: true
+    source_url: null
+    verified_on: null
+  - id: block_keyword_stuffing
+    status: local_safeguard
+    severity: warn
+    value: true
+    source_url: null
+    verified_on: null
