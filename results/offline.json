@@ -6,7 +6,7 @@
   "warn": 0,
   "failed": 0,
   "cost_usd": "0",
-  "elapsed_seconds": 0.7766747910000049,
+  "elapsed_seconds": 0.781528212000012,
   "environment": {
     "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
     "cpu": "x86_64",
@@ -18,8 +18,8 @@
       "jinja2": "3.1.6",
       "nh3": "0.3.7"
     },
-    "git_commit": "77965b3863dfaca858f265127684e3cb5e168824",
-    "recorded_at_utc": "2026-10-10T09:52:15.410653+00:00",
+    "git_commit": "67c12547f0aee6d33a8e5544540b73c7925fcd7c",
+    "recorded_at_utc": "2026-10-10T10:01:51.466455+00:00",
     "gpu": "not used: CPU-only baseline"
   },
   "limitations": [
