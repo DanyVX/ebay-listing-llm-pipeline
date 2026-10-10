@@ -38,9 +38,7 @@ class InjectionReport:
 
 
 def _canonical(value: str) -> str:
-    return unicodedata.normalize("NFKC", value).translate(ZERO_WIDTH).translate(
-        CONFUSABLES
-    )
+    return unicodedata.normalize("NFKC", value).translate(ZERO_WIDTH).translate(CONFUSABLES)
 
 
 def _sanitize(value: str) -> tuple[str, bool]:
@@ -70,7 +68,5 @@ def screen_input(row: InputRow) -> InjectionReport:
             flagged.append("attributes." + name)
     replacement["attributes"] = attributes
     cleaned = row.model_copy(update=replacement)
-    blocked = not cleaned.source_title.strip() or (
-        "brand" in flagged or "mpn" in flagged
-    )
+    blocked = not cleaned.source_title.strip() or ("brand" in flagged or "mpn" in flagged)
     return InjectionReport(tuple(flagged), cleaned, blocked)

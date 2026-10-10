@@ -10,8 +10,11 @@ from elp.schema import InputRow
 
 def row(**kwargs):
     values = {
-        "sku": "SYN-4", "source_title": "Fictional headlamp housing",
-        "price": "10", "quantity": 1, "notes": "",
+        "sku": "SYN-4",
+        "source_title": "Fictional headlamp housing",
+        "price": "10",
+        "quantity": 1,
+        "notes": "",
     }
     values.update(kwargs)
     return InputRow.model_validate(values)
