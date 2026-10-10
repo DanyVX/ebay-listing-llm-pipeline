@@ -14,6 +14,7 @@ from elp.generate.engine import PROMPT_VERSION, SYSTEM_PROMPT
 from elp.ground.injection import screen_input
 from elp.ground.verify import verify_draft
 from elp.llm.offline import DeterministicClient
+from elp.llm.protocol import LLMClient
 from elp.policy import PolicyConfig
 from elp.render import render_description
 from elp.rules import check_listing, trim_title
@@ -100,13 +101,15 @@ class Checkpoints:
         self.conn.close()
 
 
-def _generate(row_data: dict[str, Any], policy: PolicyConfig, run_id: str) -> dict[str, Any]:
+def _generate(
+    row_data: dict[str, Any], policy: PolicyConfig, run_id: str, client: LLMClient
+) -> dict[str, Any]:
     """One row; returns a serializable result. All model operations are offline in M7."""
     row = InputRow.model_validate(row_data)
     guard = screen_input(row)
     if guard.blocked:
         raise ValueError("source_prompt_injection_blocked")
-    draft_result = asyncio.run(generate_draft(guard.sanitized, DeterministicClient()))
+    draft_result = asyncio.run(generate_draft(guard.sanitized, client))
     if draft_result.draft is None or draft_result.response is None:
         raise ValueError("generation_failed: " + str(draft_result.error))
     draft = draft_result.draft
@@ -142,6 +145,7 @@ def _generate(row_data: dict[str, Any], policy: PolicyConfig, run_id: str) -> di
             run_id=run_id,
             tokens_input=draft_result.response.input_tokens,
             tokens_output=draft_result.response.output_tokens,
+            cost_usd=draft_result.response.cost_usd,
             grounding_score=grounded.score,
             prompt_hash=_hash(SYSTEM_PROMPT),
         ),
@@ -161,6 +165,7 @@ async def run_batch(
     run_id: str = "offline",
     concurrency: int = 4,
     dry_run: bool = False,
+    client: LLMClient | None = None,
 ) -> BatchSummary:
     if concurrency < 1 or concurrency > 64:
         raise ValueError("concurrency must be between 1 and 64")
@@ -186,7 +191,9 @@ async def run_batch(
         async with semaphore:
             try:
                 parsed = json.loads(record)
-                payload = await asyncio.to_thread(_generate, parsed, policy, run_id)
+                payload = await asyncio.to_thread(
+                    _generate, parsed, policy, run_id, client or DeterministicClient()
+                )
                 status = str(payload["status"])
             except (ValueError, TypeError, KeyError) as exc:
                 status = "failed"
@@ -200,7 +207,14 @@ async def run_batch(
                 if not record.strip():
                     continue
                 total += 1
-                signature = _hash(record + policy.version + PROMPT_VERSION + SYSTEM_PROMPT)
+                model_identity = (
+                    getattr(getattr(client, "config", None), "model", "deterministic-baseline")
+                    + ":"
+                    + str(getattr(getattr(client, "config", None), "base_url", "offline"))
+                )
+                signature = _hash(
+                    record + policy.version + PROMPT_VERSION + SYSTEM_PROMPT + model_identity
+                )
                 if checkpoint.lookup(index, signature):
                     cached += 1
                     continue

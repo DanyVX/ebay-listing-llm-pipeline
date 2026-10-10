@@ -9,4 +9,4 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 - Fail-closed SQLite dollar budget controls and offline fixture adapter.
 - CPU-first documentation, synthetic sample, tests, and CI foundation.
 
-No release has been tagged; v0.1.0 is reserved for the completed milestone sequence.
+- M1-M9: synthetic ingest, typed drafts, injection guards, rule engine, grounding, locked rendering, checkpoints, evaluation utilities and safe export.\n\nNo release has been tagged; v0.1.0 remains reserved until all acceptance criteria are proven.

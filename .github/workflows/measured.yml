@@ -1,0 +1,39 @@
+name: Generate locked measured artifacts
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - m9-cli-export-docs
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Create environment and dependency lock
+        run: |
+          python -m pip install uv==0.10.0
+          uv lock --python 3.12
+          uv sync --extra dev --python 3.12
+      - name: Run real offline baseline
+        run: uv run --no-sync python -m eval.benchmark --sample 100 --output results/offline.json
+      - name: Save measured results and lockfile to milestone branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add uv.lock
+          git add -f results/offline.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: commit resolved dependency lock and measured offline results"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
