@@ -63,7 +63,7 @@ def _csv_rows(path: Path) -> Iterator[dict[str, str]]:
 
 def _xlsx_rows(path: Path) -> Iterator[dict[str, str]]:
     try:
-        from openpyxl import load_workbook
+        from openpyxl import load_workbook  # type: ignore[import-untyped]
     except ImportError as exc:
         raise RuntimeError("XLSX requires optional openpyxl dependency") from exc
     workbook = load_workbook(path, read_only=True, data_only=True)
