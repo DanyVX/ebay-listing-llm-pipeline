@@ -25,17 +25,26 @@ def test_verified_rule_needs_documented_provenance():
 def test_marketplace_unknown_never_uses_guessed_value():
     with pytest.raises(ValidationError):
         PolicyRule.model_validate(
-            {"id": "unknown", "status": "needs_marketplace_lookup",
-             "severity": "error", "value": 50}
+            {
+                "id": "unknown",
+                "status": "needs_marketplace_lookup",
+                "severity": "error",
+                "value": 50,
+            }
         )
 
 
 def test_future_verification_rejected():
     with pytest.raises(ValidationError):
         PolicyRule.model_validate(
-            {"id": "future", "status": "verified", "severity": "error",
-             "value": 80, "verified_on": date(2099, 1, 1),
-             "source_url": "https://developer.ebay.com/test"}
+            {
+                "id": "future",
+                "status": "verified",
+                "severity": "error",
+                "value": 80,
+                "verified_on": date(2099, 1, 1),
+                "source_url": "https://developer.ebay.com/test",
+            }
         )
 
 

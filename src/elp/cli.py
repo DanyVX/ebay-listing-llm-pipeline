@@ -1,8 +1,9 @@
 """M0 CLI. No command makes a paid network call."""
 
-from importlib.metadata import PackageNotFoundError, version
 import platform
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
+from typing import Annotated
 
 import typer
 from pydantic import ValidationError
@@ -15,7 +16,7 @@ app = typer.Typer(help="Offline-first grounded listing pipeline (M0 scaffold).")
 
 @app.command("policy-check")
 def policy_check(
-    path: Path = typer.Option(Path("configs/rules.yaml"), help="Rules YAML path"),
+    path: Annotated[Path, typer.Option(help="Rules YAML path")] = Path("configs/rules.yaml"),
 ) -> None:
     """Validate evidence and schema; does not execute compliance checks."""
     try:

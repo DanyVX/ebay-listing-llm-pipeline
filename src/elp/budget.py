@@ -1,11 +1,10 @@
 """Fail-closed, cross-process SQLite cost reservations in integer USD micro-units."""
 
-from contextlib import closing
-from datetime import datetime, timezone
-from decimal import Decimal, InvalidOperation, ROUND_CEILING, ROUND_FLOOR
-from pathlib import Path
 import sqlite3
-
+from contextlib import closing
+from datetime import UTC, datetime
+from decimal import ROUND_CEILING, ROUND_FLOOR, Decimal, InvalidOperation
+from pathlib import Path
 
 _MICROS = Decimal("1000000")
 
@@ -37,7 +36,9 @@ def _cap_micros(value: Decimal | str | int) -> int:
 
 
 def estimate_max_usd(
-    input_tokens: int, max_output_tokens: int, input_per_million: Decimal,
+    input_tokens: int,
+    max_output_tokens: int,
+    input_per_million: Decimal,
     output_per_million: Decimal,
 ) -> Decimal:
     """Upper bound to reserve *before* an API call, assuming bounded token use."""
@@ -78,10 +79,10 @@ class BudgetLedger:
 
     @staticmethod
     def _date(now: datetime | None) -> str:
-        current = now or datetime.now(timezone.utc)
+        current = now or datetime.now(UTC)
         if current.tzinfo is None or current.utcoffset() is None:
             raise ValueError("budget timestamp must be timezone-aware")
-        return current.astimezone(timezone.utc).date().isoformat()
+        return current.astimezone(UTC).date().isoformat()
 
     @staticmethod
     def _used(conn: sqlite3.Connection, key: str, value: str) -> int:
@@ -96,7 +97,10 @@ class BudgetLedger:
         return int(row[0])
 
     def reserve(
-        self, request_id: str, run_id: str, worst_case_usd: Decimal,
+        self,
+        request_id: str,
+        run_id: str,
+        worst_case_usd: Decimal,
         now: datetime | None = None,
     ) -> None:
         if not request_id or not run_id:

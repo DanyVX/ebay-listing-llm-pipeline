@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 
 import pytest
@@ -58,7 +58,7 @@ def test_day_cap_across_multiple_runs(ledger):
 
 
 def test_day_rollover_keeps_run_cap(ledger):
-    d1 = datetime(2026, 10, 10, tzinfo=timezone.utc)
+    d1 = datetime(2026, 10, 10, tzinfo=UTC)
     ledger.reserve("a", "r1", Decimal("0.9"), d1)
     ledger.reserve("b", "r2", Decimal("0.9"), d1 + timedelta(days=1))
     assert ledger.usage_micro("r2", d1 + timedelta(days=1)) == (900000, 900000)
