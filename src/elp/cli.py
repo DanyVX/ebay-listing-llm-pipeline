@@ -61,7 +61,11 @@ def ingest_command(
 
     try:
         result = ingest(
-            source, output, rejects, duplicate_policy=cast(DuplicatePolicy, duplicate_policy), locale=locale
+            source,
+            output,
+            rejects,
+            duplicate_policy=cast(DuplicatePolicy, duplicate_policy),
+            locale=locale,
         )
     except (OSError, RuntimeError, ValueError) as exc:
         typer.echo(f"Ingest failed: {exc}", err=True)
