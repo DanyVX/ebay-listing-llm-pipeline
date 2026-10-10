@@ -30,7 +30,7 @@ class DeterministicClient:
             condition_note=row.condition,
             bullet_points=[f"{key}: {value}" for key, value in row.attributes.items()],
             compatibility=row.fitment,
-            search_keywords=list(dict.fromkeys([row.brand, row.mpn])),
+            search_keywords=[x for x in dict.fromkeys([row.brand, row.mpn]) if x],
             provenance={
                 "title": ["source_title"],
                 "brand": ["brand"] if row.brand else [],
@@ -40,7 +40,6 @@ class DeterministicClient:
                 "condition_note": ["condition"],
             },
         )
-        draft.search_keywords = [x for x in draft.search_keywords if x]
         return LLMResponse(
             model="deterministic-baseline",
             text=draft.model_dump_json(),
