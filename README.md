@@ -60,7 +60,7 @@ The `uv` workflow is recommended where internet access is available: `uv sync --
 - `python -m elp budget-check`: inspect configured run/day caps without making API calls.
 - `python -m elp environment`: local runtime details without revealing credentials.
 
-Listing generation, exports, and benchmark commands are coming in later milestones.
+M1 ingest is available now:\n\n```bash\npython -m elp ingest data/sample/synthetic.csv --output output/normalized.jsonl --rejects output/rejects.csv\n```\n\nListing generation, exports, and benchmark commands are coming in later milestones.
 
 ## Configuration
 

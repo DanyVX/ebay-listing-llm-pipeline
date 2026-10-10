@@ -3,7 +3,7 @@
 import platform
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, cast
 
 import typer
 from pydantic import ValidationError
@@ -45,6 +45,32 @@ def budget_check() -> None:
         f"max USD/day={settings.max_day_cost_usd}; "
         "no live provider configured"
     )
+
+
+@app.command("ingest")
+def ingest_command(
+    source: Annotated[Path, typer.Argument(help="Synthetic CSV or XLSX source")],
+    output: Annotated[Path, typer.Option()] = Path("output/normalized.jsonl"),
+    rejects: Annotated[Path, typer.Option()] = Path("output/rejects.csv"),
+    duplicate_policy: str = "error",
+    locale: str = "en_US",
+) -> None:
+    """Normalize supplier-like synthetic rows and isolate rejects."""
+    from elp.ingest import ingest
+    from elp.ingest.reader import DuplicatePolicy
+
+    try:
+        result = ingest(
+            source,
+            output,
+            rejects,
+            duplicate_policy=cast(DuplicatePolicy, duplicate_policy),
+            locale=locale,
+        )
+    except (OSError, RuntimeError, ValueError) as exc:
+        typer.echo(f"Ingest failed: {exc}", err=True)
+        raise typer.Exit(code=2) from exc
+    typer.echo(f"accepted={result.accepted} rejected={result.rejected} output={result.output}")
 
 
 @app.command("environment")

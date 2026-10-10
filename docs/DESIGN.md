@@ -19,3 +19,5 @@
 ## Future decisions
 
 CSV streaming, provider adapters, grounding thresholds, and caching will be logged when their milestones begin. API and model licenses have not been approved yet.
+
+| 2026-10-10 | pandas memory load / stdlib streaming | csv.reader + read-only openpyxl | 100k+ rows without whole-file memory materialization |
