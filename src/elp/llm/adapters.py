@@ -43,7 +43,7 @@ class BudgetedHttpClient:
         from uuid import uuid4
 
         cfg = self.config
-        estimated_input = max(1, len(request.payload.encode("utf-8")) // 3 + 100)
+        estimated_input = len(request.payload.encode("utf-8")) + 4096
         charge = estimate_max_usd(
             estimated_input,
             cfg.max_output_tokens,
@@ -101,6 +101,7 @@ class BudgetedHttpClient:
                 text=content,
                 input_tokens=tokens_in,
                 output_tokens=tokens_out,
+                cost_usd=actual,
             )
         except (httpx.HTTPError, KeyError, ValueError, json.JSONDecodeError):
             # Reservation remains held if a provider may have charged before failure.

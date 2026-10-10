@@ -1,6 +1,7 @@
 """Typed protocol and deterministic replay: no real provider access in M0."""
 
 from dataclasses import dataclass
+from decimal import Decimal
 from typing import Protocol
 
 
@@ -16,6 +17,7 @@ class LLMResponse:
     text: str
     input_tokens: int
     output_tokens: int
+    cost_usd: Decimal = Decimal("0")
 
 
 class LLMClient(Protocol):

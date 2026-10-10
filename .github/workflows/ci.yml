@@ -30,6 +30,8 @@ jobs:
         run: python scripts/tasks.py typecheck
       - name: Tests and coverage
         run: python scripts/tasks.py test
+      - name: Offline benchmark smoke (CPU only)
+        run: python -m eval.benchmark --sample 5 --output /tmp/offline-smoke.json
       - name: History and index privacy scan
         run: python scripts/tasks.py privacy-scan
       - name: Dependency vulnerability audit

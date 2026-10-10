@@ -9,7 +9,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_prefix="ELP_", env_file=".env", extra="ignore", validate_default=True
+        env_prefix="ELP_",
+        env_file=".env",
+        extra="ignore",
+        validate_default=True,
+        env_ignore_empty=True,
     )
 
     max_run_cost_usd: Decimal = Decimal("0")
@@ -17,6 +21,11 @@ class Settings(BaseSettings):
     budget_db_path: Path = Path(".elp_budget.sqlite3")
     log_level: str = "INFO"
     json_logs: bool = False
+    api_key: str = ""
+    provider_model: str = ""
+    provider_base_url: str = ""
+    price_input_usd_per_million: Decimal | None = None
+    price_output_usd_per_million: Decimal | None = None
 
     @field_validator("max_run_cost_usd", "max_day_cost_usd")
     @classmethod

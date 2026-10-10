@@ -65,7 +65,11 @@ def main() -> None:
     elif task == "clean":
         for folder in (".pytest_cache", ".mypy_cache", ".ruff_cache", "htmlcov", "build", "dist"):
             shutil.rmtree(ROOT / folder, ignore_errors=True)
-    elif task in {"bench", "docker-build"}:
+    elif task == "bench":
+        execute(
+            PYTHON, "-m", "eval.benchmark", "--sample", "100", "--output", "results/offline.json"
+        )
+    elif task == "docker-build":
         parser.error(f"{task} is not available in M0; no benchmark/Dockerfile implemented")
 
 

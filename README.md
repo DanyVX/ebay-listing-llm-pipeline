@@ -8,7 +8,7 @@
 
 ## Demo
 
-TBD (not yet implemented). No GIF or screenshot is claimed.
+CLI screenshots/GIF: TBD (not yet recorded). The offline example below is implemented and exercised in CI.
 
 ## Key results
 
@@ -38,7 +38,7 @@ flowchart LR
     I[Evaluation harness] --> C
 ```
 
-Modules beyond the M0 foundation are **planned, not implemented yet**.
+M1-M9 modules have implementations, but this is still an **offline research prototype** pending complete acceptance and real-model evaluation.
 
 ## Quickstart
 
@@ -60,7 +60,16 @@ The `uv` workflow is recommended where internet access is available: `uv sync --
 - `python -m elp budget-check`: inspect configured run/day caps without making API calls.
 - `python -m elp environment`: local runtime details without revealing credentials.
 
-M1 ingest is available now:\n\n```bash\npython -m elp ingest data/sample/synthetic.csv --output output/normalized.jsonl --rejects output/rejects.csv\n```\n\nListing generation, exports, and benchmark commands are coming in later milestones.
+M1 ingest is available now:\n\n```bash\npython -m elp ingest data/sample/synthetic.csv --output output/normalized.jsonl --rejects output/rejects.csv\n```\n\nRun the offline baseline and export it (does not call any LLM or eBay API):
+
+```bash
+python -m elp run output/normalized.jsonl --output output/listings.jsonl
+python -m elp validate output/listings.jsonl
+python -m elp export output/listings.jsonl --output output/export.csv
+python -m elp eval --sample 100 --output results/offline.json
+```
+
+Use `python -m elp policy-check` and `python -m elp costs` to inspect rules and budget.
 
 ## Configuration
 
@@ -68,7 +77,7 @@ Copy `.env.example` to an untracked `.env`. **Both cost caps default to $0 USD**
 
 ## Reproduce benchmarks
 
-TBD (not yet measured). The eventual `bench/` and `eval/` commands will emit `results/*.json` with hardware and git SHA and render results without manually edited numbers.
+Run `python -m eval.benchmark --sample 100 --output results/offline.json`. The JSON includes measured elapsed seconds, counts, package versions, git hash and hardware details. The deterministic baseline is NOT a model benchmark and cannot satisfy a three-model comparison.
 
 ## Design decisions
 
@@ -76,11 +85,11 @@ See [Design and decision log](docs/DESIGN.md) and [policy evidence](configs/rule
 
 ## Limitations
 
-This is an M0 scaffold, not a production listing generator. No model benchmark, eBay API integration, license clearance for future models, human evaluation, or policy/legal clearance is claimed. See [Limitations](docs/LIMITATIONS.md).
+M1-M9 provide an offline prototype, NOT a production listing system. Real-model validation, three-provider comparisons, human annotation, official item-specific taxonomy lookups, vendor permissions, a complete clean-clone audit and release verification remain outstanding. See [Limitations](docs/LIMITATIONS.md).
 
 ## Roadmap
 
-M0 foundation, policy config, budgets; M1 ingest; M2 schema generation; M3 injection; M4 rules; M5 grounding; M6 rendering; M7 batch checkpoints; M8 evaluation; M9 CLI/export/release.
+Implemented prototype: M0-M9. Pending: strengthen edge-case and property tests, verified marketplace taxonomy limits, human labels and 3-model evaluation, provider integration, provenance audit, clean-clone verification, demo, release tag.
 
 ## License
 

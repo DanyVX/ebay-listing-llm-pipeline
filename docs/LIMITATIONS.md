@@ -11,3 +11,5 @@
 - The repository is MIT licensed but this does **not** license models, supplier data, third-party descriptions, or real seller assets.
 
 - M1 input can detect common encodings but does not auto-detect arbitrary legacy encodings; ambiguous two-digit years are rejected. Raw long Excel numeric IDs may be irrecoverably damaged by Excel. Read [M1 ingest decisions](M1_INGEST.md).
+
+- M1-M9 offline prototype exists; 3 real-model evaluation, 40 hand-written gold references, 30 double-rated human samples, provider API integration, verified eBay category aspect lookups, crash-kill demonstration and final demo are incomplete. The current evaluation references are MACHINE-GENERATED and explicitly labeled as such.

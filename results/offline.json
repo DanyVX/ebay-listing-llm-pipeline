@@ -1,0 +1,30 @@
+{
+  "kind": "offline_deterministic_baseline",
+  "prompt_version": "v1",
+  "rows": 100,
+  "success": 100,
+  "warn": 0,
+  "failed": 0,
+  "cost_usd": "0",
+  "elapsed_seconds": 0.781528212000012,
+  "environment": {
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "cpu": "x86_64",
+    "python": "3.12.15",
+    "libraries": {
+      "pydantic": "2.13.5",
+      "pydantic-settings": "2.14.2",
+      "httpx": "0.28.1",
+      "jinja2": "3.1.6",
+      "nh3": "0.3.7"
+    },
+    "git_commit": "67c12547f0aee6d33a8e5544540b73c7925fcd7c",
+    "recorded_at_utc": "2026-10-10T10:01:51.466455+00:00",
+    "gpu": "not used: CPU-only baseline"
+  },
+  "limitations": [
+    "No pretrained model or paid API was used",
+    "Synthetic evaluation fixtures only",
+    "This measures software execution, not LLM quality"
+  ]
+}
