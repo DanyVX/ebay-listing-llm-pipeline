@@ -93,9 +93,7 @@ def _rows_from_cells(
     for values in rows:
         if not any(str(x or "").strip() for x in values):
             continue
-        if len(values) > len(names) and any(
-            str(x or "").strip() for x in values[len(names):]
-        ):
+        if len(values) > len(names) and any(str(x or "").strip() for x in values[len(names) :]):
             raise ValueError("unexpected_extra_columns")
         out: dict[str, str] = {}
         for index, header_name in enumerate(names):
@@ -183,9 +181,7 @@ def ingest(
             temp_output = output.with_suffix(output.suffix + ".tmp")
             try:
                 with temp_output.open("w", encoding="utf-8", newline="\n") as destination:
-                    for (payload,) in db.execute(
-                        "SELECT payload FROM rows ORDER BY idx"
-                    ):
+                    for (payload,) in db.execute("SELECT payload FROM rows ORDER BY idx"):
                         destination.write(payload + "\n")
                         count += 1
                 temp_output.replace(output)

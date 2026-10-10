@@ -65,7 +65,9 @@ def test_duplicate_policy(tmp_path, mode, expected, reject_count):
         ],
     )
     result = ingest(
-        source, tmp_path / "output.jsonl", tmp_path / "reject.csv",
+        source,
+        tmp_path / "output.jsonl",
+        tmp_path / "reject.csv",
         duplicate_policy=mode,
     )
     assert result.accepted == 1

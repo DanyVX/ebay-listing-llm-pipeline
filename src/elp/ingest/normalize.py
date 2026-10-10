@@ -121,9 +121,7 @@ def fitment_field(raw: object) -> list[dict[str, Any]]:
             raise ValueError("fitment_invalid_entry")
         if not item.get("make") or not item.get("model"):
             raise ValueError("fitment_make_model_missing")
-        first, last = years(
-            f"{item.get('year_from')}-{item.get('year_to')}"
-        )
+        first, last = years(f"{item.get('year_from')}-{item.get('year_to')}")
         output.append(
             {
                 "make": clean_text(item["make"]),
