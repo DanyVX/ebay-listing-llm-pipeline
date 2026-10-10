@@ -1,0 +1,8 @@
+# Only deterministic fixture adapter is enabled in M0. All paid models disabled.
+version: "m0"
+models:
+  fixture-local:
+    adapter: fixture
+    enabled: true
+    provider: offline
+    prompt_version: v1
