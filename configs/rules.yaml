@@ -13,7 +13,7 @@ rules:
     status: verified
     severity: error
     value: false
-    source_url: "https://www.ebay.com/help/policies/safety-security-policies/fake-items-policy?id=4247"
+    source_url: "https://www.ebay.com/help/policies/listing-policies/javascript-policy?id=4247"
     verified_on: 2026-10-10
   - id: accurate_brand_claims
     status: verified
