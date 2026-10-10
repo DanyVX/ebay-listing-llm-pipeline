@@ -9,3 +9,5 @@
 - CI secret scans only detect known patterns; a **private local denylist** must be maintained outside the repository. No automated scanner guarantees complete leak detection.
 - Budget reservation bounds require future provider adapters to reserve **worst-case** output token charges before calling providers. M0 does not call providers.
 - The repository is MIT licensed but this does **not** license models, supplier data, third-party descriptions, or real seller assets.
+
+- M1 input can detect common encodings but does not auto-detect arbitrary legacy encodings; ambiguous two-digit years are rejected. Raw long Excel numeric IDs may be irrecoverably damaged by Excel. Read [M1 ingest decisions](M1_INGEST.md).

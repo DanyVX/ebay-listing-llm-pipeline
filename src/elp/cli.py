@@ -47,6 +47,27 @@ def budget_check() -> None:
     )
 
 
+@app.command("ingest")
+def ingest_command(
+    source: Path = typer.Argument(..., help="Synthetic CSV or XLSX source"),
+    output: Path = typer.Option(Path("output/normalized.jsonl")),
+    rejects: Path = typer.Option(Path("output/rejects.csv")),
+    duplicate_policy: str = typer.Option("error"),
+    locale: str = typer.Option("en_US"),
+) -> None:
+    """Normalize supplier-like synthetic rows and isolate rejects."""
+    from elp.ingest import ingest
+
+    try:
+        result = ingest(
+            source, output, rejects, duplicate_policy=duplicate_policy, locale=locale
+        )
+    except (OSError, RuntimeError, ValueError) as exc:
+        typer.echo(f"Ingest failed: {exc}", err=True)
+        raise typer.Exit(code=2) from exc
+    typer.echo(f"accepted={result.accepted} rejected={result.rejected} output={result.output}")
+
+
 @app.command("environment")
 def environment() -> None:
     """Print anonymous environment info for diagnosing local setup."""
